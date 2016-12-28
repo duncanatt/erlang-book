@@ -34,7 +34,7 @@ read_id3_tag(File) ->
 			parse_v1_tag(Tag)
 	catch
 		_:Error ->
-		
+
 			% An error occurred when opening the file.
 			{error, Error}
 	end.
@@ -46,14 +46,14 @@ read_id3_tag(File) ->
 %
 % Matches the ID3 v1.1 tag, having the track number in the comment field.
 parse_v1_tag(<<$T, $A, $G, Title:30/binary, Artist:30/binary, Album:30/binary,
-			   _Year:4/binary, _Comment:28/binary, 0:8/integer, 
+			   _Year:4/binary, _Comment:28/binary, 0:8/integer,
 			   Track:8/integer, _Genre:8/integer>>) ->
 	{"ID3v1.1",
-		[{track, Track}, {title, trim(Title)}, {artist, trim(Artist)}, 
+		[{track, Track}, {title, trim(Title)}, {artist, trim(Artist)},
 		{album, trim(Album)}]
 	};
 
-% Matches the ID3 v, tag, having a full comment field.
+% Matches the ID3 v1, tag, having a full comment field.
 parse_v1_tag(<<$T, $A, $G, Title:30/binary, Artist:30/binary, Album:30/binary,
 			   _Year:4/binary, _Comment:30/binary, _Genre:8/integer>>) ->
 	{"ID3v1",

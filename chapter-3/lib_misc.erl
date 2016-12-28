@@ -15,14 +15,14 @@ perms([]) -> [[]];
 perms(L) -> [[H|T] || H <- L, T <- perms(L--[H])].
 
 double([], Result) -> lists:reverse(Result);
-double([H|T], Result) -> 
+double([H|T], Result) ->
 	H1 = H * 2,
 	double(T, [H1|Result]).
 
 
 % Filter without using case statement. Since we do not have the ability to
 % use case or if statements, we have to decompose filtering into two steps:
-% 1. Evaluating P(H) on the head.
+% 1. Evaluating Pred(H) on the head.
 % 2. Match the boolean pattern accordingly using the filter_bool function.
 %    2.1. If true matches (i.e. Pred(H) was true), we add H to the head of the
 %         list and evaluate filter on the tail.
@@ -37,7 +37,7 @@ filter_bool(false, Pred, _H, T) -> filter_1(Pred, T).
 % Filter using an if statement. The code is compacted a bit more, and we are able
 % to first evaluate Pred(H) and then based on the value, decide whether to add
 % H to the filtered list or not.
-filter_2(Pred, [H | T]) -> 
+filter_2(Pred, [H | T]) ->
 	X = Pred(H),
 	if
 		X =:= true -> [H | filter_2(Pred, T)];
@@ -57,7 +57,7 @@ filter_3(_Pred, []) -> [].
 
 % Divides a list of integers into odds and evens. Note that this function
 % makes use of a service function with the same name (i.e. odds_and_evens_acc),
-% albeit with a different arity. Since this has a different arity from the 
+% albeit with a different arity. Since this has a different arity from the
 % odds_and_evens_acc below, it must be terminated with a period (.). This reason
 % is that a multiple clauses of the *same* functions *must* have the same arity.
 % If that is not the case, then the compiler will generate a 'head mismatch' error,
@@ -65,11 +65,11 @@ filter_3(_Pred, []) -> [].
 %
 % The example shown below makes use of 'accumulators', which are simply lists which
 % are initially empty. Results are accumulated to them as we go along. In this case,
-% we accumulate an odd number to the list Odds, and evens to the list Evens. Keep 
-% in mind that since we are adding elements from the head (which is the most 
-% efficient way of adding elements to a list), we need to reverse them at the end, 
+% we accumulate an odd number to the list Odds, and evens to the list Evens. Keep
+% in mind that since we are adding elements from the head (which is the most
+% efficient way of adding elements to a list), we need to reverse them at the end,
 % to get an ordered output. Reversing the list at the end is computationally cheaper
-% then meddling with the list in mid computation, as list values will have to be 
+% then meddling with the list in mid computation, as list values will have to be
 % copied, making the operation inefficient.
 %
 % Also note that since we are using the 'accumulators' approach, we are only traversing

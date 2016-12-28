@@ -7,12 +7,12 @@ sleep(Millis) ->
 		after Millis -> true
 	end.
 
-% Implements a process mailbox flusher by consuming all messages. 
+% Implements a process mailbox flusher by consuming all messages.
 % The message mailbox is processed once if the timeout for the
-% after is 0. 
+% after is 0.
 flush_buffer() ->
 	receive
-		_Any -> 
+		_Any ->
 		io:format("Discarding: ~p~n", [_Any]),
 		flush_buffer()
 	after 0 -> true
